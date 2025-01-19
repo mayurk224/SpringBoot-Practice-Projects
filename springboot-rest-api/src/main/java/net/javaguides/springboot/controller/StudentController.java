@@ -50,4 +50,12 @@ public class StudentController {
         System.out.println(student.getLastName());
         return student;
     }
+
+    @PutMapping("students/{id}/update")
+    @ResponseStatus(code = org.springframework.http.HttpStatus.OK)
+    public Student updateStudent(@RequestBody Student student, @PathVariable int id){
+        System.out.println(student.getFirstName());
+        System.out.println(student.getLastName());
+        return student;
+    }
 }
