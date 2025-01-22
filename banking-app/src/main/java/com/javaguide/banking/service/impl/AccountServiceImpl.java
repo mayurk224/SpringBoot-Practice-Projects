@@ -8,6 +8,10 @@ import com.javaguide.banking.service.AccountService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
+
 @Service
 public class AccountServiceImpl implements AccountService {
 
@@ -51,5 +55,13 @@ public class AccountServiceImpl implements AccountService {
         account.setBalance(total);
         Account savedAccount = accountRepository.save(account);
         return AccountMapper.mapToAccountDto(savedAccount);
+    }
+
+    @Override
+    public List<AccountDto> getAllAccounts() {
+        List<Account> accounts = accountRepository.findAll();
+        return accounts.stream()
+                .map(account -> AccountMapper.mapToAccountDto(account))
+                .collect(Collectors.toList());
     }
 }
