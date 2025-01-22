@@ -7,15 +7,18 @@ import lombok.*;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 @Table(name = "accounts")
 @Entity
 public class Account {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;  // Changed from 'long' to 'Long'
 
-    @Column(name = "account_holder_name")
+    @Column(name = "account_holder_name", nullable = false, length = 100)
     private String accountHolderName;
+
+    @Column(nullable = false)
     private double balance;
 }
