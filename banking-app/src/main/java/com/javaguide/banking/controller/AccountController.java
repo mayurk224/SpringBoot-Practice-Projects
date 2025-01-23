@@ -1,6 +1,7 @@
 package com.javaguide.banking.controller;
 
 import com.javaguide.banking.dto.AccountDto;
+import com.javaguide.banking.dto.TransferFundDto;
 import com.javaguide.banking.service.AccountService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -55,5 +56,11 @@ public class AccountController {
     public ResponseEntity<String> deleteAccount(@PathVariable Long id) {
         accountService.deleteAccount(id);
         return ResponseEntity.ok("Account is deleted successfully");
+    }
+
+    @PostMapping("/transfer")
+    public ResponseEntity<String> transferFunds(@RequestBody TransferFundDto transferFundDto) {
+        accountService.transferFunds(transferFundDto);
+        return ResponseEntity.ok("Transfer Successful");
     }
 }
