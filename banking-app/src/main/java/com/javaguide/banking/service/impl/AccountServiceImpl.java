@@ -46,7 +46,7 @@ public class AccountServiceImpl implements AccountService {
     public AccountDto withdraw(Long id, double amount) {
         Account account = accountRepository.findById(id).orElseThrow(()-> new AccountException("Account does not exist"));
         if (account.getBalance() < amount) {
-            throw new RuntimeException("Insufficient balance");
+            throw new AccountException("Insufficient balance");
         }
         double total = account.getBalance() - amount;
         account.setBalance(total);
