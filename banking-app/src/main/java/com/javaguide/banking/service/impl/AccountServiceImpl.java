@@ -10,6 +10,7 @@ import com.javaguide.banking.service.AccountService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
@@ -59,7 +60,7 @@ public class AccountServiceImpl implements AccountService {
     public List<AccountDto> getAllAccounts() {
         List<Account> accounts = accountRepository.findAll();
         return accounts.stream()
-                .map(account -> AccountMapper.mapToAccountDto(account))
+                .map(AccountMapper::mapToAccountDto)
                 .collect(Collectors.toList());
     }
 
@@ -71,30 +72,31 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public void transferFunds(TransferFundDto transferFundDto) {
-        // Fetch 'fromAccount' and validate its existence
-        Account fromAccount = accountRepository.findById(transferFundDto.fromAccountId())
-                .orElseThrow(() -> new AccountException("From account does not exist"));
-
-        // Fetch 'toAccount' and validate its existence
-        Account toAccount = accountRepository.findById(transferFundDto.toAccountId())
-                .orElseThrow(() -> new AccountException("To account does not exist"));
-
-        // Validate sufficient balance in 'fromAccount'
-        if (fromAccount.getBalance() < transferFundDto.amount()) {
-            throw new AccountException("Insufficient balance in from account");
+        // Check if 'fromAccountId' and 'toAccountId' are the same
+        if (Objects.equals(transferFundDto.fromAccountId(), transferFundDto.toAccountId())) {
+            throw new IllegalArgumentException("Transfer to the same account is not allowed");
         }
 
-        // Validate positive transfer amount
-        if (transferFundDto.amount() <= 0) {
-            throw new AccountException("Transfer amount must be greater than zero");
+        // Retrieve 'from' and 'to' accounts
+        Account fromAccount = accountRepository.findById(transferFundDto.fromAccountId()).orElseThrow(
+                () -> new AccountException("From account does not exist")
+        );
+        Account toAccount = accountRepository.findById(transferFundDto.toAccountId()).orElseThrow(
+                () -> new AccountException("To account does not exist")
+        );
+
+        // Check for sufficient balance in 'from' account
+        if (fromAccount.getBalance() < transferFundDto.amount()) {
+            throw new AccountException("Insufficient balance in account ID: " + fromAccount.getId());
         }
 
         // Perform the fund transfer
         fromAccount.setBalance(fromAccount.getBalance() - transferFundDto.amount());
         toAccount.setBalance(toAccount.getBalance() + transferFundDto.amount());
 
-        // Save both accounts (transaction ensures atomicity)
+        // Save the updated accounts
         accountRepository.save(fromAccount);
         accountRepository.save(toAccount);
     }
+
 }
