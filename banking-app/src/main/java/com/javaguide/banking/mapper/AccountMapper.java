@@ -11,11 +11,11 @@ public class AccountMapper {
 
     // Map AccountDto to Account entity
     public static Account mapToAccount(AccountDto accountDto) {
-        return Account.builder()
-                .id(accountDto.getId() != null ? accountDto.getId() : null)  // Handle null ID
-                .accountHolderName(accountDto.getAccountHolderName())
-                .balance(accountDto.getBalance())
-                .build();
+        return new Account(
+                accountDto.id(),
+                accountDto.accountHolderName(),
+                accountDto.balance()
+        );
     }
 
 

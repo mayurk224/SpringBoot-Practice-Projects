@@ -22,9 +22,7 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    @Transactional
     public AccountDto createAccount(AccountDto accountDto) {
-        accountDto.setId(null);  // Ensure the ID is null before saving
         Account account = AccountMapper.mapToAccount(accountDto);
         Account savedAccount = accountRepository.save(account);
         return AccountMapper.mapToAccountDto(savedAccount);
