@@ -5,11 +5,8 @@ import com.javaguide.banking.entity.Account;
 
 public class AccountMapper {
 
-    private AccountMapper() {
-        // Private constructor to prevent instantiation
-    }
+    private AccountMapper() {}
 
-    // Map AccountDto to Account entity
     public static Account mapToAccount(AccountDto accountDto) {
         return new Account(
                 accountDto.id(),
@@ -18,8 +15,6 @@ public class AccountMapper {
         );
     }
 
-
-    // Map Account entity to AccountDto
     public static AccountDto mapToAccountDto(Account account) {
         if (account == null) {
             return null;
