@@ -71,16 +71,29 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public void transferFunds(TransferFundDto transferFundDto) {
-        Account fromAccount = accountRepository.findById(transferFundDto.fromAccountId()).orElseThrow(
-                () -> new AccountException("Account does not exist")
-        );
-        Account toAccount = accountRepository.findById(transferFundDto.toAccountId()).orElseThrow(
-                () -> new AccountException("Account does not exist")
-        );
+        // Fetch 'fromAccount' and validate its existence
+        Account fromAccount = accountRepository.findById(transferFundDto.fromAccountId())
+                .orElseThrow(() -> new AccountException("From account does not exist"));
 
+        // Fetch 'toAccount' and validate its existence
+        Account toAccount = accountRepository.findById(transferFundDto.toAccountId())
+                .orElseThrow(() -> new AccountException("To account does not exist"));
+
+        // Validate sufficient balance in 'fromAccount'
+        if (fromAccount.getBalance() < transferFundDto.amount()) {
+            throw new AccountException("Insufficient balance in from account");
+        }
+
+        // Validate positive transfer amount
+        if (transferFundDto.amount() <= 0) {
+            throw new AccountException("Transfer amount must be greater than zero");
+        }
+
+        // Perform the fund transfer
         fromAccount.setBalance(fromAccount.getBalance() - transferFundDto.amount());
         toAccount.setBalance(toAccount.getBalance() + transferFundDto.amount());
 
+        // Save both accounts (transaction ensures atomicity)
         accountRepository.save(fromAccount);
         accountRepository.save(toAccount);
     }
