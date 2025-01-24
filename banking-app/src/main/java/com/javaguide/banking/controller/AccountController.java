@@ -1,6 +1,7 @@
 package com.javaguide.banking.controller;
 
 import com.javaguide.banking.dto.AccountDto;
+import com.javaguide.banking.dto.TransactionDto;
 import com.javaguide.banking.dto.TransferFundDto;
 import com.javaguide.banking.service.AccountService;
 import org.springframework.http.ResponseEntity;
@@ -62,5 +63,11 @@ public class AccountController {
     public ResponseEntity<String> transferFunds(@RequestBody TransferFundDto transferFundDto) {
         accountService.transferFunds(transferFundDto);
         return ResponseEntity.ok("Transfer Successful");
+    }
+
+    @GetMapping("/{accountId}/transactions")
+    public ResponseEntity<List<TransactionDto>> fetchAccountTransaction(@PathVariable Long accountId) {
+        List<TransactionDto> transactions = accountService.getAccountTransactions(accountId);
+        return ResponseEntity.ok(transactions);
     }
 }

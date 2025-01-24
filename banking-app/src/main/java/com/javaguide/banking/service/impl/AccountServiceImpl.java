@@ -1,14 +1,18 @@
 package com.javaguide.banking.service.impl;
 
 import com.javaguide.banking.dto.AccountDto;
+import com.javaguide.banking.dto.TransactionDto;
 import com.javaguide.banking.dto.TransferFundDto;
 import com.javaguide.banking.entity.Account;
+import com.javaguide.banking.entity.Transaction;
 import com.javaguide.banking.exception.AccountException;
 import com.javaguide.banking.mapper.AccountMapper;
 import com.javaguide.banking.repository.AccountRepository;
+import com.javaguide.banking.repository.TransactionRepository;
 import com.javaguide.banking.service.AccountService;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -18,8 +22,15 @@ public class AccountServiceImpl implements AccountService {
 
     private final AccountRepository accountRepository;
 
-    public AccountServiceImpl(AccountRepository accountRepository) {
+    private final TransactionRepository transactionRepository;
+
+    private static final String TRANSACTION_TYPE_DEPOSIT = "DEPOSIT";
+    private static final String TRANSACTION_TYPE_WITHDRAW = "WITHDRAW";
+    private static final String TRANSACTION_TYPE_TRANSFER = "TRANSFER";
+
+    public AccountServiceImpl(AccountRepository accountRepository, TransactionRepository transactionRepository) {
         this.accountRepository = accountRepository;
+        this.transactionRepository = transactionRepository;
     }
 
     @Override
@@ -41,6 +52,15 @@ public class AccountServiceImpl implements AccountService {
         double total = account.getBalance() + amount;
         account.setBalance(total);
         Account savedAccount = accountRepository.save(account);
+
+        Transaction transaction = new Transaction();
+        transaction.setAccountId(id);
+        transaction.setAmount(amount);
+        transaction.setTransactionType(TRANSACTION_TYPE_DEPOSIT);
+        transaction.setTimestamp(LocalDateTime.now());
+
+        transactionRepository.save(transaction);
+
         return AccountMapper.mapToAccountDto(savedAccount);
     }
 
@@ -53,6 +73,15 @@ public class AccountServiceImpl implements AccountService {
         double total = account.getBalance() - amount;
         account.setBalance(total);
         Account savedAccount = accountRepository.save(account);
+
+        Transaction transaction = new Transaction();
+        transaction.setAccountId(id);
+        transaction.setAmount(amount);
+        transaction.setTransactionType(TRANSACTION_TYPE_WITHDRAW);
+        transaction.setTimestamp(LocalDateTime.now());
+
+        transactionRepository.save(transaction);
+
         return AccountMapper.mapToAccountDto(savedAccount);
     }
 
@@ -97,6 +126,41 @@ public class AccountServiceImpl implements AccountService {
         // Save the updated accounts
         accountRepository.save(fromAccount);
         accountRepository.save(toAccount);
+
+        Transaction transaction = new Transaction();
+        transaction.setAccountId(transferFundDto.fromAccountId());
+        transaction.setAmount(transferFundDto.amount());
+        transaction.setTransactionType(TRANSACTION_TYPE_TRANSFER);
+        transaction.setTimestamp(LocalDateTime.now());
+
+        transactionRepository.save(transaction);
+    }
+
+    @Override
+    public List<TransactionDto> getAccountTransactions(Long accountId) {
+        // Check if the account exists
+        boolean accountExists = accountRepository.existsById(accountId);
+        if (!accountExists) {
+            throw new AccountException("Account with ID " + accountId + " does not exist.");
+        }
+
+        // Retrieve transactions if the account exists
+        List<Transaction> transactions = transactionRepository.findByAccountIdOrderByTimestampDesc(accountId);
+
+        return transactions.stream()
+                .map(this::convertEntityToDto)
+                .collect(Collectors.toList());
+    }
+
+
+    private TransactionDto convertEntityToDto(Transaction transaction) {
+        return new TransactionDto(
+                transaction.getId(),
+                transaction.getAccountId(),
+                transaction.getAmount(),
+                transaction.getTransactionType(),
+                transaction.getTimestamp()
+        );
     }
 
 }
