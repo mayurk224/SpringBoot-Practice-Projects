@@ -1,0 +1,7 @@
+package com.expensetracker.expense.repository;
+
+import com.expensetracker.expense.entity.Category;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface CategoryRepository extends JpaRepository<Category, Long> {
+}
