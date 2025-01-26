@@ -33,4 +33,10 @@ public class ExpenseController {
         List<ExpenseDto> expenses = expenseService.getAllExpenses();
         return ResponseEntity.ok(expenses);
     }
+
+    @PutMapping("{expenseId}")
+    public ResponseEntity<ExpenseDto> updateExpense(@PathVariable Long expenseId,@RequestBody ExpenseDto expenseDto){
+        ExpenseDto updateExpense = expenseService.updateExpense(expenseId,expenseDto);
+        return ResponseEntity.ok(updateExpense);
+    }
 }
