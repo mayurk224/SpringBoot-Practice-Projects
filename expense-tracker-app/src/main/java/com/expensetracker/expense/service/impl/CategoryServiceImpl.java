@@ -8,6 +8,9 @@ import com.expensetracker.expense.service.CategoryService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @AllArgsConstructor
 @Service
 public class CategoryServiceImpl implements CategoryService {
@@ -27,5 +30,12 @@ public class CategoryServiceImpl implements CategoryService {
                 ()-> new RuntimeException("Category not found with id:"+categoryId)
         );
         return CategoryMapper.mapToCategoryDto(category);
+    }
+
+    @Override
+    public List<CategoryDto> getAllCategory() {
+        List<Category> categories = categoryRepository.findAll();
+        return categories.stream().map((category)->CategoryMapper.mapToCategoryDto(category)).collect(Collectors.toList());
+
     }
 }
