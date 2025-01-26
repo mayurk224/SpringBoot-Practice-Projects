@@ -20,4 +20,12 @@ public class CategoryServiceImpl implements CategoryService {
         Category savedCategory = categoryRepository.save(category);
         return CategoryMapper.mapToCategoryDto(savedCategory);
     }
+
+    @Override
+    public CategoryDto getCategory(Long categoryId) {
+        Category category = categoryRepository.findById(categoryId).orElseThrow(
+                ()-> new RuntimeException("Category not found with id:"+categoryId)
+        );
+        return CategoryMapper.mapToCategoryDto(category);
+    }
 }
