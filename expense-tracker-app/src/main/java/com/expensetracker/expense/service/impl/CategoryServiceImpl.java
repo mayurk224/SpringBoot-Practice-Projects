@@ -49,4 +49,12 @@ public class CategoryServiceImpl implements CategoryService {
         Category updatedCategory = categoryRepository.save(category);
         return CategoryMapper.mapToCategoryDto(updatedCategory);
     }
+
+    @Override
+    public void deleteCategory(Long categoryId) {
+        Category category = categoryRepository.findById(categoryId).orElseThrow(
+                ()-> new RuntimeException("Category not found with id:"+categoryId)
+        );
+        categoryRepository.delete(category);
+    }
 }
