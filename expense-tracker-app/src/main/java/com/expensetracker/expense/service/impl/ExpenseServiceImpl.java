@@ -63,4 +63,12 @@ public class ExpenseServiceImpl implements ExpenseService {
 
         return ExpenseMapper.mapToExpenseDto(updatedExpense);
     }
+
+    @Override
+    public void deleteExpense(Long expenseId) {
+        Expense expense = expenseRepository.findById(expenseId).orElseThrow(
+                ()-> new RuntimeException("Expense not found with id"+expenseId)
+        );
+        expenseRepository.delete(expense);
+    }
 }

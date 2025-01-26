@@ -39,4 +39,10 @@ public class ExpenseController {
         ExpenseDto updateExpense = expenseService.updateExpense(expenseId,expenseDto);
         return ResponseEntity.ok(updateExpense);
     }
+
+    @DeleteMapping("{expenseId}")
+    public ResponseEntity<String> deleteExpense(@PathVariable Long expenseId){
+        expenseService.deleteExpense(expenseId);
+        return ResponseEntity.ok("Expense deleted successfully");
+    }
 }
