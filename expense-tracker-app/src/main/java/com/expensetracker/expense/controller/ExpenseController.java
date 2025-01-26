@@ -7,6 +7,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @AllArgsConstructor
 @RestController
 @RequestMapping("/api/expenses")
@@ -24,5 +26,11 @@ public class ExpenseController {
     public ResponseEntity<ExpenseDto> getExpenseById(@PathVariable Long expenseId){
         ExpenseDto expense = expenseService.getExpenseById(expenseId);
         return ResponseEntity.ok(expense);
+    }
+
+    @GetMapping
+    public ResponseEntity<List<ExpenseDto>> getAllExpenses(){
+        List<ExpenseDto> expenses = expenseService.getAllExpenses();
+        return ResponseEntity.ok(expenses);
     }
 }
