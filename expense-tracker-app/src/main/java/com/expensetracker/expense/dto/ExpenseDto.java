@@ -1,10 +1,10 @@
 package com.expensetracker.expense.dto;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 public record ExpenseDto(Long id,
                          BigDecimal amount,
-                         LocalDateTime expenseDate,
+                         LocalDate expenseDate,
                          CategoryDto categoryDto) {
 }

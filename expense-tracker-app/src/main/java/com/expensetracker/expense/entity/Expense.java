@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Getter
 @Setter
@@ -25,7 +25,7 @@ public class Expense {
     private BigDecimal amount;
 
     @Column(nullable = false)
-    private LocalDateTime expenseDate;
+    private LocalDate expenseDate;
 
     @ManyToOne
     @JoinColumn(name = "category_id", nullable = false)
