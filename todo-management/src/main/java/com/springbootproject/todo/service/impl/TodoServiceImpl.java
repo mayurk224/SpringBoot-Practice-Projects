@@ -2,6 +2,7 @@ package com.springbootproject.todo.service.impl;
 
 import com.springbootproject.todo.dto.TodoDto;
 import com.springbootproject.todo.entity.Todo;
+import com.springbootproject.todo.exception.ResourceNotFoundException;
 import com.springbootproject.todo.repository.TodoRepository;
 import com.springbootproject.todo.service.TodoService;
 import lombok.AllArgsConstructor;
@@ -26,5 +27,15 @@ public class TodoServiceImpl implements TodoService {
         TodoDto savedTodoDto = modelMapper.map(saveTodo,TodoDto.class);
 
         return savedTodoDto;
+    }
+
+    @Override
+    public TodoDto getTodo(Long id) {
+
+        Todo todo = todoRepository.findById(id).orElseThrow(
+                ()-> new ResourceNotFoundException("Todo not found with id: "+id)
+        );
+
+        return modelMapper.map(todo, TodoDto.class);
     }
 }
