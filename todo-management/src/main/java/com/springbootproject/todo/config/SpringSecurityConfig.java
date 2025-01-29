@@ -2,6 +2,7 @@ package com.springbootproject.todo.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.core.userdetails.User;
@@ -24,7 +25,15 @@ public class SpringSecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
                 .csrf(csrf -> csrf.disable()) // Corrected method for disabling CSRF
-                .authorizeHttpRequests(auth -> auth.anyRequest().authenticated())
+                .authorizeHttpRequests(auth -> auth
+//                        .requestMatchers(HttpMethod.POST, "/api/**").hasRole("ADMIN")
+//                        .requestMatchers(HttpMethod.PUT, "/api/**").hasRole("ADMIN")
+//                        .requestMatchers(HttpMethod.DELETE, "/api/**").hasRole("ADMIN")
+//                        .requestMatchers(HttpMethod.GET, "/api/**").hasAnyRole("ADMIN","USER")
+//                        .requestMatchers(HttpMethod.PATCH,"/api/**").hasAnyRole("ADMIN","USER")
+                                .requestMatchers(HttpMethod.GET,"/api/**").permitAll()
+                        .anyRequest().authenticated()
+                )
                 .httpBasic(Customizer.withDefaults());
 
         return httpSecurity.build();
