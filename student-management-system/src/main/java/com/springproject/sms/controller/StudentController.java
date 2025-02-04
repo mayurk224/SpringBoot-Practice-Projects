@@ -23,4 +23,11 @@ public class StudentController {
         model.addAttribute("students", students);
         return "students";
     }
+
+    @GetMapping("/students/new")
+    public String newStudent(Model model){
+        StudentDto studentDto = new StudentDto();
+        model.addAttribute("student", studentDto);
+        return "create_student";
+    }
 }
