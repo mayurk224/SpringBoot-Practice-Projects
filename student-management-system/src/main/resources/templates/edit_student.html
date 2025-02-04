@@ -17,6 +17,13 @@
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" th:href="@{/students/new}">New Student</a>
+                </li>
+            </ul>
+        </div>
     </div>
 </nav>
 <div class="container mt-5">
@@ -24,10 +31,12 @@
         <div class="col-md-6">
             <div class="card">
                 <div class="card-header">
-                    <h2 class="text-center">Add New Student</h2>
+                    <h2 class="text-center">Edit Student</h2>
                 </div>
                 <div class="card-body">
-                    <form th:action="@{/students}" th:object="${student}" method="POST">
+                    <form th:action="@{/students/{studentId}(studentId=${student.id})}"
+                          th:object="${student}"
+                          method="POST">
                         <div class="mb-3">
                             <label for="firstName" class="form-label">First Name</label>
                             <input type="text" class="form-control" id="firstName" th:field="*{firstName}" required>

@@ -1,6 +1,7 @@
 package com.springproject.sms.service;
 
 import com.springproject.sms.dto.StudentDto;
+import jakarta.validation.Valid;
 
 import java.util.List;
 
@@ -11,4 +12,6 @@ public interface StudentService {
     void createStudent(StudentDto studentDto);
 
     StudentDto getStudent(Long studentId);
+
+    void updateStudent(@Valid StudentDto studentDto);
 }

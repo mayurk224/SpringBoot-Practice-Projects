@@ -53,4 +53,19 @@ public class StudentController {
         model.addAttribute("student", studentDto);
         return "edit_student";
     }
+
+    @PostMapping("/students/{studentId}")
+    public String updateStudent(@PathVariable Long studentId,
+                                @Valid @ModelAttribute("student") StudentDto studentDto,
+                                BindingResult result,
+                                Model model){
+        // Update the student and redirect to the list of students
+        if(result.hasErrors()){
+            model.addAttribute("student", studentDto);
+            return "edit_student";
+        }
+        studentDto.setId(studentId);
+        studentService.updateStudent(studentDto);
+        return "redirect:/students";
+    }
 }
