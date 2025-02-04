@@ -49,4 +49,9 @@ public class StudentServiceImpl implements StudentService {
         student.setEmail(studentDto.getEmail());
         studentRepository.save(student);
     }
+
+    @Override
+    public void deleteStudent(Long studentId) {
+        studentRepository.deleteById(studentId);
+    }
 }
