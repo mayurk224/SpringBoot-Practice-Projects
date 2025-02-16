@@ -18,6 +18,10 @@ function EmployeeListComponent() {
     const addNewEmployee = () => {
       navigate('/add-employee');
     }
+
+    function updateEmployee(id){
+      navigate(`/edit-employee/${id}`);
+    }
     
   return (
 
@@ -31,6 +35,7 @@ function EmployeeListComponent() {
             <th>First Name</th>
             <th>Last Name</th>
             <th>Email</th>
+            <th>Actions</th>
           </tr>
         </thead>
         <tbody>
@@ -40,6 +45,10 @@ function EmployeeListComponent() {
               <td>{employee.firstName}</td>
               <td>{employee.lastName}</td>
               <td>{employee.email}</td>
+              <td>
+                <button className="btn btn-warning mr-2" onClick={()=>updateEmployee(employee.id)}>Edit</button>
+                <button className='btn btn-danger mr-2' onClick={() => deleteEmployee(employee.id)}>Delete</button>
+              </td>
             </tr>
           ))}
         </tbody>
