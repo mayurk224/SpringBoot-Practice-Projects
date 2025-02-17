@@ -16,9 +16,14 @@ public class Test {
 //        System.out.println("Phone: " + user.getPhone());
 //    }
 
+//    public static void main(String[] args) {
+//        User user = new User();
+//        User user1 = new User(1,"mayur","kamble","Mayur@gmail.com",25,"9860896318");
+//        User user2 = new User("Mayur","Kamble");
+//    }
+
     public static void main(String[] args) {
-        User user = new User();
-        User user1 = new User(1,"mayur","kamble","Mayur@gmail.com",25,"9860896318");
-        User user2 = new User("Mayur","Kamble");
+        User user = new User(1,"mayur","kamble","mayur@gmail.com",25,"9860896318");
+        System.out.println(user);
     }
 }

@@ -6,7 +6,8 @@ import lombok.*;
 //@Setter
 @NoArgsConstructor(force = true)
 @AllArgsConstructor
-@RequiredArgsConstructor
+//@RequiredArgsConstructor
+@ToString(includeFieldNames = false)
 public class User {
 
 //    @Getter
@@ -20,8 +21,12 @@ public class User {
 //    @Getter(AccessLevel.PROTECTED)
 //    @Setter(AccessLevel.PROTECTED)
     private final String lastName;
+
+    @ToString.Exclude
     private String email;
     private int age;
+
+    @ToString.Exclude
     private String phone;
 
 //    public User() {
@@ -41,5 +46,18 @@ public class User {
 //    public User(String firstName, String lastName) {
 //        this.firstName = firstName;
 //        this.lastName = lastName;
+//    }
+
+
+//    @Override
+//    public String toString() {
+//        return "User{" +
+//                "id=" + id +
+//                ", firstName='" + firstName + '\'' +
+//                ", lastName='" + lastName + '\'' +
+//                ", email='" + email + '\'' +
+//                ", age=" + age +
+//                ", phone='" + phone + '\'' +
+//                '}';
 //    }
 }
