@@ -4,20 +4,20 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 
-//@Getter
-//@Setter
+@Getter
+@Setter
 public class User {
 
-    @Getter
-    @Setter
+//    @Getter
+//    @Setter
     private int id;
 
-    @Getter
-    @Setter
+//    @Getter
+//    @Setter
     private String firstName;
 
-    @Getter(AccessLevel.PROTECTED)
-    @Setter(AccessLevel.PROTECTED)
+//    @Getter(AccessLevel.PROTECTED)
+//    @Setter(AccessLevel.PROTECTED)
     private String lastName;
     private String email;
     private int age;
