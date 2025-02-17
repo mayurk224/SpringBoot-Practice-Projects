@@ -1,6 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { createEmployee, getEmployeeById } from "../services/Employee";
+import {
+  createEmployee,
+  getEmployeeById,
+  updateEmployee,
+} from "../services/Employee";
 
 const AddEmployee = () => {
   const navigate = useNavigate();
@@ -9,35 +13,50 @@ const AddEmployee = () => {
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
 
-  const {id} = useParams();
+  const { id } = useParams();
 
-  const handleSubmit = (e) => {
+  const saveOrUpdateEmployee = (e) => {
     e.preventDefault();
 
-    if(validateForm()){
+    if (validateForm()) {
       const employee = { firstName, lastName, email };
       console.log(employee);
-      createEmployee(employee).then((response) => {
-        console.log(response);
-        navigate("/employees");
-      });
+
+      if (id) {
+        updateEmployee(id, employee)
+          .then((response) => {
+            console.log(response.data);
+            navigate("/employees");
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      } else {
+        createEmployee(employee).then((response) => {
+          console.log(response.data);
+          navigate("/employees");
+        }).catch(error=>{
+          console.log(error);
+        }
+        )
+      }
     }
-    
   };
 
-  useEffect(()=>{
-    if(id){
-      getEmployeeById(id).then((response)=>{
-        setFirstName(response.data.firstName);
-        setLastName(response.data.lastName);
-        setEmail(response.data.email);
-      }).catch(error=>{
-        console.log(error);
-        navigate("/employees");
-      })
+  useEffect(() => {
+    if (id) {
+      getEmployeeById(id)
+        .then((response) => {
+          setFirstName(response.data.firstName);
+          setLastName(response.data.lastName);
+          setEmail(response.data.email);
+        })
+        .catch((error) => {
+          console.log(error);
+          navigate("/employees");
+        });
     }
-
-  },[id])
+  }, [id]);
 
   const [errors, setErrors] = useState({
     firstName: "",
@@ -69,16 +88,16 @@ const AddEmployee = () => {
       isValid = false;
     }
 
-    setErrors(errorsCopy)
+    setErrors(errorsCopy);
 
     return isValid;
   }
 
-  function pageTitle(){
-    if(id){
-      return <h2 className="text-center">Update Employee</h2>
+  function pageTitle() {
+    if (id) {
+      return <h2 className="text-center">Update Employee</h2>;
     } else {
-      return <h2 className="text-center">Add Employee</h2>
+      return <h2 className="text-center">Add Employee</h2>;
     }
   }
 
@@ -87,51 +106,60 @@ const AddEmployee = () => {
       <div className="row">
         <div className="card col-md-6 offset-md-3">
           <div className="card-body">
-            {
-              pageTitle()
-            }
-            <form onSubmit={handleSubmit}>
+            {pageTitle()}
+            <form>
               <div className="form-group mb-3">
                 <label className="form-label">First Name:</label>
                 <input
                   type="text"
-                  className={`form-control ${errors.firstName ? `is-invalid`:``}`}
+                  className={`form-control ${
+                    errors.firstName ? `is-invalid` : ``
+                  }`}
                   placeholder="Enter first name"
                   value={firstName}
                   onChange={(e) => setFirstName(e.target.value)}
-                  
                 />
-                {errors.firstName && <span className="invalid-feedback">{errors.firstName}</span>}
+                {errors.firstName && (
+                  <span className="invalid-feedback">{errors.firstName}</span>
+                )}
               </div>
 
               <div className="form-group mb-3">
                 <label className="form-label">Last Name:</label>
                 <input
                   type="text"
-                  className={`form-control ${errors.lastName ? `is-invalid`:``}`}
+                  className={`form-control ${
+                    errors.lastName ? `is-invalid` : ``
+                  }`}
                   placeholder="Enter last name"
                   value={lastName}
                   onChange={(e) => setLastName(e.target.value)}
-                  
                 />
-                {errors.lastName && <span className="invalid-feedback">{errors.lastName}</span>}
+                {errors.lastName && (
+                  <span className="invalid-feedback">{errors.lastName}</span>
+                )}
               </div>
 
               <div className="form-group mb-3">
                 <label className="form-label">Email:</label>
                 <input
                   type="email"
-                  className={`form-control ${errors.email ? `is-invalid`:``}`}
+                  className={`form-control ${errors.email ? `is-invalid` : ``}`}
                   placeholder="Enter email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  
                 />
-                {errors.email && <span className="invalid-feedback">{errors.email}</span>}
+                {errors.email && (
+                  <span className="invalid-feedback">{errors.email}</span>
+                )}
               </div>
 
               <div className="d-flex justify-content-between">
-                <button type="submit" className="btn btn-success">
+                <button
+                  type="submit"
+                  className="btn btn-success"
+                  onClick={saveOrUpdateEmployee}
+                >
                   Submit
                 </button>
                 <button
