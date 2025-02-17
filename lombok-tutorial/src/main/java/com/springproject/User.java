@@ -2,12 +2,15 @@ package com.springproject;
 
 import lombok.*;
 
-//@Getter
-//@Setter
-@NoArgsConstructor(force = true)
-@AllArgsConstructor
+import java.util.Objects;
+
+@Getter
+@Setter
+//@NoArgsConstructor(force = true)
+//@AllArgsConstructor
 //@RequiredArgsConstructor
-@ToString(includeFieldNames = false)
+//@ToString(includeFieldNames = false)
+@EqualsAndHashCode
 public class User {
 
 //    @Getter
@@ -16,17 +19,17 @@ public class User {
 
 //    @Getter
 //    @Setter
-    private final String firstName;
+    private  String firstName;
 
 //    @Getter(AccessLevel.PROTECTED)
 //    @Setter(AccessLevel.PROTECTED)
-    private final String lastName;
+    private  String lastName;
 
-    @ToString.Exclude
+//    @ToString.Exclude
     private String email;
     private int age;
 
-    @ToString.Exclude
+//    @ToString.Exclude
     private String phone;
 
 //    public User() {
@@ -59,5 +62,18 @@ public class User {
 //                ", age=" + age +
 //                ", phone='" + phone + '\'' +
 //                '}';
+//    }
+
+
+//    @Override
+//    public boolean equals(Object o) {
+//        if (o == null || getClass() != o.getClass()) return false;
+//        User user = (User) o;
+//        return id == user.id && age == user.age && Objects.equals(firstName, user.firstName) && Objects.equals(lastName, user.lastName) && Objects.equals(email, user.email) && Objects.equals(phone, user.phone);
+//    }
+//
+//    @Override
+//    public int hashCode() {
+//        return Objects.hash(id, firstName, lastName, email, age, phone);
 //    }
 }

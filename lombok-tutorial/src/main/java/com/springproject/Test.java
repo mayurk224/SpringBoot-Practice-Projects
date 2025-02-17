@@ -22,8 +22,26 @@ public class Test {
 //        User user2 = new User("Mayur","Kamble");
 //    }
 
+//    public static void main(String[] args) {
+//        User user = new User(1,"mayur","kamble","mayur@gmail.com",25,"9860896318");
+//        System.out.println(user);
+//    }
+
     public static void main(String[] args) {
-        User user = new User(1,"mayur","kamble","mayur@gmail.com",25,"9860896318");
-        System.out.println(user);
+        User user = new User();
+        user.setFirstName("John");
+        user.setLastName("Doe");
+        user.setEmail("johndoe@gmail.com");
+        user.setAge(30);
+        user.setPhone("9876543211");
+
+        User user1 = new User();
+        user1.setFirstName("John");
+        user1.setLastName("Doe");
+        user1.setEmail("johndoe@gmail.com");
+        user1.setAge(10);
+        user1.setPhone("9876543210");
+
+        System.out.println(user.equals(user1));
     }
 }
