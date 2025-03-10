@@ -5,6 +5,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Objects;
+
 @RestController
 public class HelloController {
 
@@ -19,6 +21,9 @@ public class HelloController {
         return chatClient
                 .prompt(message)
                 .call()
-                .content();
+                .chatResponse()
+                .getResult()
+                .getOutput()
+                .getText();
     }
 }
